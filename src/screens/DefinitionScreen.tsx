@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import { Text, View, Image, ScrollView, ActivityIndicator, StyleSheet } from "react-native";
 import { DefinitionResponse, DefinitionStore } from '../models';
 
@@ -10,7 +10,7 @@ import { parseReferences } from '../actions'
 
 type RouteParams = {
   params: {
-    definition: DefinitionResponse,
+    id: string,
     [key: string]: any
   },
   [key: string]: any
@@ -28,12 +28,27 @@ type Props = {
 
 class DefinitionScreen extends React.Component<Props> {
 
+  _unsubscribeFocus: Function = () => {}
+
   constructor(props: Props) {
     super(props)
   }
 
   componentDidMount() {
 
+    this.screenFocused()
+    this._unsubscribeFocus = this.props.navigation.addListener('focus', () => {
+      // The screen is focused
+      // Call any action
+      this.screenFocused()
+    });
+  }
+
+  componentWillUnmount () {
+    this._unsubscribeFocus();
+  }
+
+  screenFocused () {
     const { route, definitionStore } = this.props;
     const { references } = route.params.definition._source;
 
@@ -77,15 +92,15 @@ class DefinitionScreen extends React.Component<Props> {
 
   render() {
 
-    const { route, navigation } = this.props;
+    const { definition } = this.props.route.params;
 
-    const { imageUrl, title, color, featured, faq, likes, dislikes } = route.params.definition._source;
+    const { imageUrl, title, color, featured, faq, likes, dislikes } = definition._source;
 
     return (
       <ScrollView style={{ flex: 1 }}>
         <View style={styles.imageContainer}>
           <View style={[styles.imageStyle, { backgroundColor: color }]}>
-            <Image source={{ uri: imageUrl}} resizeMode="cover" />
+            {imageUrl ? (<Image source={{ uri: imageUrl }} resizeMode="cover" />) : null}
           </View>
         </View>
         <View style={styles.textContainer}>

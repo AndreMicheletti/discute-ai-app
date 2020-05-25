@@ -1,5 +1,6 @@
+import axios from 'axios';
 import { BACKEND_URL } from '../consts';
-import axios, { AxiosResponse } from 'axios';
+import { DefinitionResponse, DefinitionStore } from '../models';
 import {
     FIREBASE_DEFINITIONS_ERROR,
     FIREBASE_DEFINITIONS_REQUEST,
@@ -18,11 +19,17 @@ export const definitionsFetch = () => {
 
             const response = await axios.get(`${BACKEND_URL}/definitions`)
 
-            console.log(response.data)
+            const sortedData = response.data.sort(sortByFeatured)
+
+            let payload: DefinitionStore = {}
+
+            sortedData.forEach((definitionResp: DefinitionResponse) => {
+                payload[definitionResp._id] = definitionResp
+            })
 
             dispatch({
               type: FIREBASE_DEFINITIONS_SUCCESS,
-              payload: []
+              payload
             });
 
         } catch (e) {
@@ -32,4 +39,13 @@ export const definitionsFetch = () => {
             return null;
         }
     };
+}
+
+function sortByFeatured (a: DefinitionResponse, b: DefinitionResponse) {
+    if (a._source.featured && !b._source.featured) {
+        return -1
+    } else if (b._source.featured && !a._source.featured) {
+        return 1
+    }
+    return -1
 }

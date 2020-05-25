@@ -105,7 +105,7 @@ const mapStateToProps = (state: any) => {
   return {
     loading: state.home.loading,
     error: state.home.error,
-    definitions: state.definitions.definitions
+    definitions: state.definitions
   };
 };
 
