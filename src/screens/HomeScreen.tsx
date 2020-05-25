@@ -4,7 +4,8 @@ import {
   TextInput,
   ActivityIndicator,
   Text,
-  StyleSheet
+  StyleSheet,
+  StatusBar
 } from "react-native";
 import { DefinitionStore } from '../models';
 
@@ -12,6 +13,7 @@ import { connect } from 'react-redux';
 import { definitionsFetch } from '../actions';
 
 import ListDefinitions from '../components/ListDefinitions';
+import SearchInput from '../components/SearchInput';
 
 
 type Props = {
@@ -39,11 +41,7 @@ class HomeScreen extends React.Component<Props> {
     return (
       <View style={styles.outerContainer}>
         <View style={styles.searchBarContainer}>
-            <TextInput
-              style={styles.searchInputStyle}
-              onChangeText={text => console.log('')}
-              value={'procurar...'}
-            />
+            <SearchInput />
         </View>
         {this.renderContent()}
       </View>
@@ -81,16 +79,8 @@ class HomeScreen extends React.Component<Props> {
 
 const styles = StyleSheet.create({
   outerContainer: {
+    marginTop: StatusBar.currentHeight,
     flex: 1,
-  },
-  searchInputStyle: {
-    width: 300,
-    height: 30,
-    padding: 5,
-    borderRadius: 5,
-    borderColor: '#45a1a1',
-    color: 'gray',
-    borderWidth: 1
   },
   searchBarContainer: {
     padding: 20,
