@@ -19,7 +19,9 @@ class DefinitionButton extends React.PureComponent<Props> {
             _score: 0,
             _source: {
                 references: [],
+                text: "",
                 imageUrl: "",
+                tags: [],
                 faq: [],
                 title: "",
                 color: "",
@@ -41,6 +43,7 @@ class DefinitionButton extends React.PureComponent<Props> {
             ...style,
             backgroundColor: color,
             width: featured ? 310 : 145,
+            height: featured ? 165 : 145,
         };
 
         return (
@@ -48,11 +51,22 @@ class DefinitionButton extends React.PureComponent<Props> {
                 <View style={[styles.outerContainer, extraStyle]}>
                     { 
                     imageUrl  ? 
-                    <Image source={{ uri: imageUrl }} /> 
-                    : 
-                    <Text style={styles.textStyle}>
+                    <Image
+                        resizeMode={"cover"}
+                        source={{ uri: imageUrl }}
+                        style={{ 
+                            width: extraStyle.width,
+                            height: extraStyle.height,
+                            borderRadius: styles.outerContainer.borderRadius,
+                        }}
+                    />  : null}
+                    <Text
+                        numberOfLines={1}
+                        style={[styles.textStyle, { fontSize: featured ? 24 : 18 }]}
+                        adjustsFontSizeToFit
+                    >
                         {title}
-                    </Text> }
+                    </Text>
                 </View>
             </TouchableNativeFeedback>
         );
@@ -64,11 +78,14 @@ const styles = StyleSheet.create({
         width: 145,
         height: 145,
         borderRadius: 10,
-        marginTop: 20,
+        marginTop: 5,
+        marginRight: 10,
+        textAlign: 'center',
         justifyContent: 'center',
         alignItems: 'center'
     },
     textStyle: {
+        position: 'absolute',
         color: 'white',
         fontWeight: 'bold'
     }

@@ -1,19 +1,21 @@
 import React from "react";
 import { 
   View,
-  TextInput,
   ActivityIndicator,
   Text,
   StyleSheet,
-  StatusBar
+  StatusBar,
+  ScrollView
 } from "react-native";
-import { DefinitionStore } from '../models';
+import { DefinitionStore, DefinitionResponse } from '../models';
 
 import { connect } from 'react-redux';
 import { definitionsFetch } from '../actions';
 
-import ListDefinitions from '../components/ListDefinitions';
+import HorizontalSection from '../components/HorizontalSection';
 import SearchInput from '../components/SearchInput';
+
+import _ from 'lodash'
 
 
 type Props = {
@@ -22,6 +24,24 @@ type Props = {
   error: boolean,
   definitionsFetch: Function,
   navigation: any,
+}
+
+type HomeSectionProps = {
+  title: string,
+  data: DefinitionResponse[],
+  navigation: any
+}
+
+
+const HomeSection = (props: HomeSectionProps) => {
+  return (
+    <View style={{ marginTop: 10, marginBottom: 25 }}>
+      <Text style={{ paddingHorizontal: 15, fontSize: 22, fontWeight: "800" }}>
+        {props.title}
+      </Text>
+      <HorizontalSection data={props.data} navigation={props.navigation} />
+    </View>
+  )
 }
 
 
@@ -43,12 +63,12 @@ class HomeScreen extends React.Component<Props> {
         <View style={styles.searchBarContainer}>
             <SearchInput />
         </View>
-        {this.renderContent()}
+        {this.renderSections()}
       </View>
     );
   }
 
-  renderContent() {
+  renderSections() {
 
     const { loading, error, definitions, navigation } = this.props;
 
@@ -71,9 +91,19 @@ class HomeScreen extends React.Component<Props> {
     }
 
     return (
-      <ListDefinitions definitionStore={definitions} navigation={navigation} />
+      <ScrollView contentContainerStyle={{ paddingBottom: 15 }}>
+        <HomeSection title="Em alta" data={this.featuredData()} navigation={navigation}/>
+        <HomeSection title="Definições" data={this.notFeaturedData()} navigation={navigation}/>
+      </ScrollView>
     )
+  }
 
+  featuredData(): DefinitionResponse[] {
+    return _.values(this.props.definitions).filter(def => def._source.featured);
+  }
+
+  notFeaturedData(): DefinitionResponse[] {
+    return _.values(this.props.definitions).filter(def => !def._source.featured);
   }
 }
 
@@ -83,9 +113,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   searchBarContainer: {
-    padding: 20,
-    paddingBottom: 10,
+    padding: 25,
     height: 50,
+    marginTop: 10,
     justifyContent: 'center',
     alignItems: 'center'
   },

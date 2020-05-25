@@ -33,13 +33,13 @@ function App() {
           screenOptions={{
             headerStyle: {
               backgroundColor: colors.backgroundColor,
-              elevation: 0,
-              shadowOpacity: 0,
+              elevation: 3,
+              shadowOpacity: 0.3,
               shadowOffset: {
-                height: 0,
+                height: 1,
               },
               shadowRadius: 0,
-              height: 80,
+              height: 85,
             },
             headerTintColor: colors.fontColor,
             headerTitleStyle: {
@@ -58,7 +58,7 @@ function App() {
             name="Definition"
             component={DefinitionScreen}
             options={({ route }) => ({
-              title: route.params.definition.title,
+              title: route.params.definition._source.title,
             })}
           />
         </Stack.Navigator>

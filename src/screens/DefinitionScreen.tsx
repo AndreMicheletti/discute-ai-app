@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { Text, View, Image, ScrollView, ActivityIndicator, StyleSheet } from "react-native";
 import { DefinitionResponse, DefinitionStore } from '../models';
 
-import ReferencesList from '../components/ReferencesList';
+import HorizontalSection from '../components/HorizontalSection';
 
 import { connect } from 'react-redux';
 import { parseReferences } from '../actions'
@@ -84,7 +84,7 @@ class DefinitionScreen extends React.Component<Props> {
       <React.Fragment>
         {title}
         <View style={styles.referencesContainer}>
-          <ReferencesList navigation={navigation} references={parsedReferences} />
+          <HorizontalSection navigation={navigation} data={parsedReferences} />
         </View>
       </React.Fragment>
     )
@@ -94,19 +94,29 @@ class DefinitionScreen extends React.Component<Props> {
 
     const { definition } = this.props.route.params;
 
-    const { imageUrl, title, color, featured, faq, likes, dislikes } = definition._source;
+    const { imageUrl, color, text, faq, likes, dislikes } = definition._source;
 
     return (
       <ScrollView style={{ flex: 1 }}>
         <View style={styles.imageContainer}>
           <View style={[styles.imageStyle, { backgroundColor: color }]}>
-            {imageUrl ? (<Image source={{ uri: imageUrl }} resizeMode="cover" />) : null}
+            {imageUrl ? 
+            (
+              <Image
+                style={styles.imageStyle}
+                source={{ uri: imageUrl }}
+                resizeMode="cover"
+              />
+            ) : null}
           </View>
         </View>
         <View style={styles.textContainer}>
-            <Text>
-              asdaasdaasdaasdaasdaasdaasdaasdaasdaasdaasdaasdaasdaasdaasdaasdaasdaasdaasdaasdaasdaasdaasdaasdaasdaasdaasdaasdaasdaasdaasdaasdaasdaasdaasdaasdaasdaasdaasdaasdaasdaasdaasdaasdaasdaasdaasdaasdaasdaasdaasdaasdaasdaasdaasdaasdaasdaasdaasdaasdaasdaasdaasdaasdaasdaasdaasdaasdaasdaasdaasdaasda
-            </Text>
+          <Text style={styles.titleText}>
+            Definição
+          </Text>
+          <Text style={styles.textArea}>
+            {text}
+          </Text>
         </View>
         {this.renderReferences()}
         <View style={{ height: 20 }}></View>
@@ -128,6 +138,15 @@ const styles = StyleSheet.create({
   },
   textContainer: {
     padding: 20,
+  },
+  titleText: {
+    color: "#000",
+    fontSize: 19,
+    paddingBottom: 5,
+  },
+  textArea: {
+    color: "#555",
+    fontSize: 14,
   },
   referencesContainer: {
     flex: 1,

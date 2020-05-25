@@ -1,12 +1,14 @@
 
 export type DefinitionObject = {
-    references: string[],
-    imageUrl: string,
-    faq: string[],
     title: string,
+    text: string,
+    imageUrl: string,
     color: string,
+    tags: string[],
     likes: number,
     dislikes: number,
+    references: string[],
+    faq: string[],
     featured: boolean
 }
 
