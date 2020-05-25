@@ -1,14 +1,32 @@
-import React from "react";
-import { TouchableNativeFeedback, View, Image, Text } from "react-native";
+import React from 'react';
+import { TouchableNativeFeedback, View, Image, Text, StyleSheet } from 'react-native';
 
-class DefinitionButton extends React.PureComponent {
+import { DefinitionResponse } from '../models'
 
-    static defaultProps = {
+type Props = {
+    definition: DefinitionResponse,
+    style: Object,
+    onPress: Function
+}
+
+class DefinitionButton extends React.PureComponent<Props> {
+
+    static defaultProps: Props = {
         definition: {
-            imgSrc: "",
-            title: "Desconhecido",
-            backgroundColor: "red",
-            featured: false,
+            _index: "",
+            _type: "",
+            _id: "1",
+            _score: 0,
+            _source: {
+                references: [],
+                imageUrl: "",
+                faq: [],
+                title: "",
+                color: "",
+                likes: 0,
+                dislikes: 0,
+                featured: false
+            }
         },
         style: {},
         onPress: () => console.warn("NO ON PRESS DEFINED")
@@ -17,11 +35,11 @@ class DefinitionButton extends React.PureComponent {
     render () {
 
         const { definition, onPress, style } = this.props;
-        const { imgSrc, title, backgroundColor, featured } = definition;
+        const { imageUrl, title, color, featured } = definition._source;
 
         const extraStyle = {
             ...style,
-            backgroundColor,
+            backgroundColor: color,
             width: featured ? 310 : 145,
         };
 
@@ -29,8 +47,8 @@ class DefinitionButton extends React.PureComponent {
             <TouchableNativeFeedback onPress={() => onPress()}>
                 <View style={[styles.outerContainer, extraStyle]}>
                     { 
-                    imgSrc  ? 
-                    <Image src={imgSrc} /> 
+                    imageUrl  ? 
+                    <Image source={{ uri: imageUrl }} /> 
                     : 
                     <Text style={styles.textStyle}>
                         {title}
@@ -41,7 +59,7 @@ class DefinitionButton extends React.PureComponent {
     }
 }
 
-const styles = {
+const styles = StyleSheet.create({
     outerContainer: {
         width: 145,
         height: 145,
@@ -54,6 +72,6 @@ const styles = {
         color: 'white',
         fontWeight: 'bold'
     }
-};
+})
 
 export default DefinitionButton;

@@ -4,7 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 import * as Permissions from 'expo-permissions';
 
-const ClockButton = ({ size = 32 , navigation, ...props }) => {
+const ClockButton = ({ size = 32, ...props }) => {
     return (
         <TouchableNativeFeedback onPress={() => askAndOpenClock()}>
             <View style={{ padding: 8, ...props.style }}>
@@ -15,7 +15,7 @@ const ClockButton = ({ size = 32 , navigation, ...props }) => {
 }
 
 async function askAndOpenClock() {
-    const result = await Permissions.getAsync('REMINDERS');
+    const result = await Permissions.getAsync(Permissions.REMINDERS);
     console.log(result)
 }
 
