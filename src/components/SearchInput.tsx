@@ -1,17 +1,31 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, TextInput} from 'react-native';
 
-const SearchInput = () => {
 
-    const [text, setText] = useState("")
+type Props = {
+    onChangeText: Function,
+    onFocus: Function,
+    value: string,
+    placeholder: string
+}
 
+const defaultProps: Props = {
+    onChangeText: () => {},
+    onFocus: () => {},
+    value: "",
+    placeholder: "Procurar..."
+}
+
+
+const SearchInput = (props: Props = defaultProps) => {
     return (
         <View style={styles.containerStyle}>
             <TextInput
               style={styles.inputStyle}
-              onChangeText={text => setText(text)}
-              placeholder={"Procurar..."}
-              value={text}
+              onChangeText={text => props.onChangeText(text)}
+              onFocus={() => props.onFocus()}
+              placeholder={props.placeholder}
+              value={props.value}
             />
         </View>
     )

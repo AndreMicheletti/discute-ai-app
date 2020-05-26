@@ -5,3 +5,9 @@ export const FIREBASE_DEFINITIONS_ERROR: string = "FIREBASE_DEFINITIONS_ERROR";
 
 export const REFERENCES_INIT: string = "REFERENCES_INIT"
 export const REFERENCES_FINISHED: string = "REFERENCES_FINISHED"
+
+export const SEARCH_CHANGE_TEXT: string = "SEARCH_CHANGE_TEXT"
+export const SEARCH_REQUEST: string = "SEARCH_REQUEST"
+export const SEARCH_SUCCESS: string = "SEARCH_SUCCESS"
+export const SEARCH_ERROR: string = "SEARCH_ERROR"
+export const SEARCH_RESET: string = "SEARCH_RESET"

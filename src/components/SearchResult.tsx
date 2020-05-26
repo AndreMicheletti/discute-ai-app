@@ -1,26 +1,36 @@
 import React from "react";
-import { View, ScrollView, StyleSheet } from "react-native";
+import { View, ScrollView, StyleSheet, Text } from "react-native";
 
 import DefinitionButton from './DefinitionButton';
 
-import { DefinitionStore, DefinitionResponse } from '../models'
+import { DefinitionResponse } from '../models'
 
 import _ from 'lodash';
 
 
 type Props = {
-    definitionStore: DefinitionStore,
+    data: DefinitionResponse[],
     navigation: any
 }
 
-class ListDefinitions extends React.PureComponent<Props> {
+class SearchResult extends React.PureComponent<Props> {
 
     static defaultProps: Props = {
-        definitionStore: {},
+        data: [],
         navigation: undefined
     };
 
     render () {
+
+        if (this.props.data.length <= 0) {
+            return (
+                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                    <Text style={{ marginTop: 50, fontSize: 20 }}>
+                        Nada foi encontrado
+                    </Text>
+                </View>
+            );
+        }
 
         return (
             <View>
@@ -32,11 +42,9 @@ class ListDefinitions extends React.PureComponent<Props> {
     }
 
     renderDefinitions () {
-        const { definitionStore, navigation } = this.props;
+        const { data, navigation } = this.props;
 
-        const definitions: DefinitionResponse[] = _.values(definitionStore)
-
-        return definitions.map((definitionResp: DefinitionResponse) => {
+        return data.map((definitionResp: DefinitionResponse) => {
             return (
                 <DefinitionButton
                     key={definitionResp._id}
@@ -59,4 +67,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default ListDefinitions;
+export default SearchResult;
