@@ -1,11 +1,12 @@
 import axios from 'axios';
 import { BACKEND_URL } from '../consts';
-import { DefinitionResponse, DefinitionStore } from '../models';
+import { DefinitionResponse, DefinitionStore, FirebaseData, FirebaseDefinition } from '../models';
 import {
     FIREBASE_DEFINITIONS_ERROR,
     FIREBASE_DEFINITIONS_REQUEST,
     FIREBASE_DEFINITIONS_SUCCESS,
 } from './types';
+import { db } from '../../firebaseConn'
 
 import _ from 'lodash';
 
@@ -48,4 +49,49 @@ function sortByFeatured (a: DefinitionResponse, b: DefinitionResponse) {
         return 1
     }
     return -1
+}
+
+
+export const firebaseDefinitionsFetch = () => {
+
+    return async (dispatch: Function) => {
+        dispatch({ type: FIREBASE_DEFINITIONS_REQUEST });
+
+        try {
+            const snapshot = await db.collection("definitions").get()
+
+            let payload: any[] = []
+
+            snapshot.forEach(doc => {
+                payload.push({
+                    id: doc.id,
+                    ...doc.data()
+                })
+            })
+
+            const sortedPayload: FirebaseDefinition[] = payload.sort((a: FirebaseDefinition, b: FirebaseDefinition) => {
+                if (a.featured && !b.featured) {
+                    return -1;
+                }
+                if (b.featured && !a.featured) {
+                    return 1;
+                }
+                if (a.likes && b.likes) {
+                    return a.likes >= b.likes ? -1 : 1;
+                }
+                return 1;
+            })
+
+            dispatch({
+              type: FIREBASE_DEFINITIONS_SUCCESS,
+              payload: _.keyBy(sortedPayload, o => o.id)
+            });
+
+        } catch (e) {
+            console.warn(e);
+
+            dispatch({ type: FIREBASE_DEFINITIONS_ERROR });
+            return null;
+        }
+    };
 }
