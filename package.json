@@ -13,7 +13,8 @@
     "@react-native-community/masked-view": "^0.1.10",
     "@react-native-firebase/app": "^7.0.1",
     "@react-native-firebase/firestore": "^7.0.1",
-    "@react-navigation/bottom-tabs": "^5.4.5",
+    "@react-navigation/bottom-tabs": "^5.5.1",
+    "@react-navigation/drawer": "^5.8.1",
     "@react-navigation/native": "^5.4.0",
     "@react-navigation/stack": "^5.3.7",
     "@redux-offline/redux-offline": "^2.5.2-expo.0",
@@ -40,7 +41,8 @@
     "redux": "^4.0.5",
     "redux-persist": "^6.0.0",
     "redux-persist-expo-securestore": "^2.0.0",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "expo-font": "~8.1.0"
   },
   "devDependencies": {
     "@babel/core": "7.9.0",

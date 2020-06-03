@@ -1,24 +1,31 @@
 import {decode, encode} from 'base-64'
 if (!global.btoa) {  global.btoa = encode }; if (!global.atob) { global.atob = decode }
 
-import React from "react";
-import "./firebaseConn";
+import React, { useEffect } from "react"
+import { FontDisplay, loadAsync } from 'expo-font'
+import "./firebaseConn"
 import * as colors from './src/colors'
 
-import HomeScreen from './src/screens/HomeScreen';
-import DefinitionScreen from './src/screens/DefinitionScreen';
-
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+
+import AppStack from './src/stacks'
 
 // import { PersistGate } from 'redux-persist/integration/react'
-// import { store, persistor } from './src/store';
-import { Provider } from 'react-redux';
-import { store } from './src/store';
+// import { store, persistor } from './src/store'
+import { Provider } from 'react-redux'
+import { store } from './src/store'
 
-const Stack = createStackNavigator();
 
 function App() {
+
+  useEffect(async () => {
+    await loadAsync({
+      'Roboto': {
+        uri: require('./src/fonts/Roboto-Black.ttf'),
+        fontDisplay: FontDisplay.FALLBACK
+      }
+    })
+  }, [])
 
   return (
     <Provider store={store}>
@@ -29,42 +36,10 @@ function App() {
           background: colors.backgroundColor
         },
       }}>
-        <Stack.Navigator
-          screenOptions={{
-            headerStyle: {
-              backgroundColor: colors.backgroundColor,
-              elevation: 3,
-              shadowOpacity: 0.3,
-              shadowOffset: {
-                height: 1,
-              },
-              shadowRadius: 0,
-              height: 85,
-            },
-            headerTintColor: colors.fontColor,
-            headerTitleStyle: {
-              fontWeight: 'normal',
-              fontSize: 26,
-              paddingLeft: 10,
-            }
-          }}
-        >
-          <Stack.Screen
-            name="Home"
-            component={HomeScreen}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="Definition"
-            component={DefinitionScreen}
-            options={({ route }) => ({
-              title: route.params.definition._source.title,
-            })}
-          />
-        </Stack.Navigator>
+        <AppStack />
       </NavigationContainer>
     </Provider>
   );
 }
 
-export default App;
+export default App
