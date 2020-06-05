@@ -1,8 +1,20 @@
 import React, { useEffect } from "react";
-import { Text, View, Image, ScrollView, ActivityIndicator, StyleSheet } from "react-native";
-import { DefinitionResponse, DefinitionStore } from '../models';
+import { 
+  Text,
+  View,
+  Image,
+  ScrollView,
+  ActivityIndicator,
+  StyleSheet,
+  TouchableNativeFeedback,
+  Linking
+} from "react-native";
+import { Ionicons } from '@expo/vector-icons';
+import { MarkdownView } from 'react-native-markdown-view';
 
 import HorizontalSection from '../components/HorizontalSection';
+
+import { DefinitionResponse, DefinitionStore } from '../models';
 
 import { connect } from 'react-redux';
 import { parseReferences } from '../actions'
@@ -90,6 +102,16 @@ class DefinitionScreen extends React.Component<Props> {
     )
   }
 
+  async openLink (url: string) {
+    if (url.includes('https') || url.includes('http')) {
+      try {
+        await Linking.openURL(url)
+      } catch (e) {
+        console.warn('An error occurred: ', e)
+      }
+    }
+  }
+
   render() {
 
     const { definition } = this.props.route.params;
@@ -110,15 +132,74 @@ class DefinitionScreen extends React.Component<Props> {
             ) : null}
           </View>
         </View>
+        <View style={styles.likeContainer}>
+
+          <TouchableNativeFeedback>
+            <View style={[styles.likeButton, { marginRight: 10 }]}>
+              <Text style={styles.likeButtonText}>
+                {likes}
+              </Text>
+              <Ionicons name="md-thumbs-up" color="white" size={20} />
+            </View>
+          </TouchableNativeFeedback>
+          
+          <TouchableNativeFeedback>
+            <View style={[styles.likeButton, { marginLeft: 10 }]}>
+              <Text style={styles.likeButtonText}>
+                {dislikes}
+              </Text>
+              <Ionicons name="md-thumbs-down" color="white" size={20} />
+            </View>
+          </TouchableNativeFeedback>
+        </View>
+
+        {/* Markdown Text */}
         <View style={styles.textContainer}>
           <Text style={styles.titleText}>
             Definição
           </Text>
-          <Text style={styles.textArea}>
+          <MarkdownView
+            style={styles.textArea}
+            onLinkPress={(url: string) => { this.openLink(url) }}
+          >
             {text}
-          </Text>
+          </MarkdownView>
         </View>
+
+        {/* References */}
         {this.renderReferences()}
+
+        {/* Source */}
+        <View style={styles.sourceContainer}>
+          <Text style={styles.titleText}>
+            Fonte
+          </Text>
+
+          <View style={{ flex: 1, flexDirection: 'column' }}>
+            <View style={{ flex: 1 }}>
+              <Image
+                source={{ uri: "https://www.politize.com.br/wp-content/uploads/2018/01/header-home-politize.png" }}
+                resizeMode="cover"
+                style={{ flex: 1, height: 100 }}
+              />
+            </View>
+
+            <View style={{ paddingLeft: 10, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+              <Text style={{ fontSize: 18, color: "#555", alignItems: 'center', justifyContent: 'center' }}>
+                Politize!
+              </Text>
+              <TouchableNativeFeedback>
+                <View style={{ width: 80, padding: 8, backgroundColor: "#2765cf", alignItems: 'center' }}>
+                  <Text style={styles.likeButtonText}>
+                    visitar
+                  </Text>
+                </View>
+              </TouchableNativeFeedback>
+            </View>
+          </View>
+
+        </View>
+
         <View style={{ height: 20 }}></View>
       </ScrollView>
     );
@@ -139,9 +220,33 @@ const styles = StyleSheet.create({
   textContainer: {
     padding: 20,
   },
+  sourceContainer: {
+    padding: 20,
+  },
+  likeContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  likeButton: {
+    width: 80,
+    flexDirection: 'row',
+    paddingHorizontal: 13,
+    paddingVertical: 10,
+    backgroundColor: '#2765cf',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    borderRadius: 2,
+  },
+  likeButtonText: {
+    color: 'white',
+    fontSize: 14,
+    fontWeight: 'bold'
+  },
   titleText: {
     color: "#000",
-    fontSize: 19,
+    fontSize: 20,
     paddingBottom: 5,
   },
   textArea: {

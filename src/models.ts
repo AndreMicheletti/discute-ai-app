@@ -9,7 +9,8 @@ export type DefinitionObject = {
     dislikes: number,
     references: string[],
     faq: string[],
-    featured: boolean
+    featured: boolean,
+    source: string
 }
 
 export type DefinitionResponse = {
