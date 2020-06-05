@@ -19,12 +19,13 @@ import { store } from './src/store'
 function App() {
 
   useEffect(async () => {
-    await loadAsync({
+    const res = await loadAsync({
       'Roboto': {
         uri: require('./src/fonts/Roboto-Black.ttf'),
         fontDisplay: FontDisplay.FALLBACK
       }
     })
+    console.log(res)
   }, [])
 
   return (

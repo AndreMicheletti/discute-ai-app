@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { 
   View,
   ActivityIndicator,
@@ -8,6 +8,7 @@ import {
   ScrollView,
   TextInput,
   Keyboard,
+  FlatList,
   TouchableNativeFeedback
 } from "react-native";
 import { DefinitionStore, DefinitionResponse } from '../models';
@@ -15,6 +16,7 @@ import { DefinitionStore, DefinitionResponse } from '../models';
 import { connect } from 'react-redux';
 import { definitionsFetch, submitSearch, resetSearch, changeSearchText } from '../actions';
 
+import VerticalSection from '../components/VerticalSection';
 import HorizontalSection from '../components/HorizontalSection';
 import SearchResult from '../components/SearchResult';
 
@@ -43,6 +45,7 @@ type Props = {
 type HomeSectionProps = {
   title: string,
   data: DefinitionResponse[],
+  horizontal: boolean,
   navigation: any,
 }
 
@@ -53,7 +56,12 @@ const HomeSection = (props: HomeSectionProps) => {
       <Text style={{ paddingHorizontal: 15, fontSize: 22, fontWeight: "800" }}>
         {props.title}
       </Text>
-      <HorizontalSection data={props.data} navigation={props.navigation} />
+      {props.horizontal ? (
+        <HorizontalSection data={props.data} navigation={props.navigation} />
+      ) : (
+        <VerticalSection data={props.data} navigation={props.navigation} />
+      )}
+      
     </View>
   )
 }
@@ -168,6 +176,13 @@ class HomeScreen extends React.Component<Props> {
     )
   }
 
+  homeSections () {
+    return [
+      { id: 'featured', horizontal: true, title: "Em Alta", data: this.featuredData() },
+      { id: 'normal', horizontal: false, title: "Definições", data: this.notFeaturedData() },
+    ]
+  }
+
   renderSections() {
 
     const { loading, error, definitions, navigation } = this.props;
@@ -179,10 +194,17 @@ class HomeScreen extends React.Component<Props> {
       return this.renderError();
 
     return (
-      <ScrollView contentContainerStyle={{ paddingBottom: 15 }}>
-        <HomeSection title="Em alta" data={this.featuredData()} navigation={navigation}/>
-        <HomeSection title="Definições" data={this.notFeaturedData()} navigation={navigation}/>
-      </ScrollView>
+      <FlatList
+        contentContainerStyle={{ paddingBottom: 8 }}
+        data={this.homeSections()}
+        renderItem={({ item }) => {
+          const { data, title, horizontal } = item;
+          return (
+            <HomeSection horizontal={horizontal} title={title} data={data} navigation={navigation}/>
+          )
+        }}
+        keyExtractor={item => item.id}
+      />
     )
   }
 

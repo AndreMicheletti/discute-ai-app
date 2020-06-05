@@ -166,6 +166,31 @@ class DefinitionScreen extends React.Component<Props> {
           </MarkdownView>
         </View>
 
+        {/* FAQ */}
+        <View style={styles.faqContainer}>
+          <Text style={styles.titleText}>
+            Perguntas Frequentes
+          </Text>
+          <View style={{ flex: 1, flexDirection: 'column' }}>
+
+            <View style={{ flex: 1, flexDirection: 'column', borderWidth: 1, borderRadius: 2, borderColor: 'lightgray' }}>
+
+            <View style={{ padding: 5, backgroundColor: 'lightgray' }}>
+                <Text style={{ fontSize: 15 }}>
+                  Question
+                </Text>
+              </View>
+              <View style={{ padding: 5 }}>
+                <Text style={{ fontSize: 12 }}>
+                  Resposta....
+                </Text>
+              </View>
+
+            </View>
+
+          </View>
+        </View>
+
         {/* References */}
         {this.renderReferences()}
 
@@ -218,10 +243,16 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   textContainer: {
-    padding: 20,
+    marginTop: 35,
+    paddingHorizontal: 20,
   },
   sourceContainer: {
-    padding: 20,
+    marginTop: 35,
+    paddingHorizontal: 20,
+  },
+  faqContainer: {
+    marginTop: 35,
+    paddingHorizontal: 20,
   },
   likeContainer: {
     flex: 1,

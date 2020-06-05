@@ -2,6 +2,7 @@ import React from "react";
 import { View, ScrollView, StyleSheet, Text } from "react-native";
 
 import DefinitionButton from './DefinitionButton';
+import VerticalSection from './VerticalSection';
 
 import { DefinitionResponse } from '../models'
 
@@ -33,10 +34,8 @@ class SearchResult extends React.PureComponent<Props> {
         }
 
         return (
-            <View>
-                <ScrollView contentContainerStyle={styles.twoPerLine}>
-                    {this.renderDefinitions()}
-                </ScrollView>
+            <View style={{ paddingBottom: 80 }}>
+                <VerticalSection data={this.props.data} navigation={this.props.navigation} />
             </View>
         );
     }
@@ -48,6 +47,7 @@ class SearchResult extends React.PureComponent<Props> {
             return (
                 <DefinitionButton
                     key={definitionResp._id}
+                    line
                     onPress={() => navigation.push("Definition", {definition: definitionResp})}
                     definition={definitionResp}
                 />
@@ -61,9 +61,8 @@ const styles = StyleSheet.create({
         paddingLeft: 25,
         paddingRight: 25,
         alignItems: 'center',
-        flexDirection: 'row',
+        flexDirection: 'column',
         justifyContent: 'space-between',
-        flexWrap: 'wrap'
     }
 });
 
