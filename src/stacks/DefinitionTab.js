@@ -3,6 +3,7 @@ import * as colors from '../colors'
 
 import HomeScreen from '../screens/HomeScreen'
 import DefinitionScreen from '../screens/DefinitionScreen'
+import CategoryScreen from '../screens/CategoryScreen'
 
 import { createStackNavigator } from '@react-navigation/stack'
 
@@ -40,6 +41,13 @@ const DefinitionStack = () => {
             component={DefinitionScreen}
             options={({ route }) => ({
               title: route.params.definition._source.title,
+            })}
+          />
+          <Definition.Screen
+            name="Category"
+            component={CategoryScreen}
+            options={({ route }) => ({
+              title: route.params.category.title,
             })}
           />
         </Definition.Navigator>

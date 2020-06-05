@@ -5,6 +5,7 @@ import {
     FIREBASE_DEFINITIONS_ERROR,
     FIREBASE_DEFINITIONS_REQUEST,
     FIREBASE_DEFINITIONS_SUCCESS,
+    FIREBASE_HOME_TAGS_SUCCESS
 } from './types';
 import { db } from '../../firebaseConn'
 
@@ -18,6 +19,16 @@ export const definitionsFetch = () => {
 
         try {
 
+            // GET TAGS FOR HOME SCREEN
+            const responseTags = await axios.get(`${BACKEND_URL}/definitions/tags`)
+            const resultTags = responseTags.data
+
+            dispatch({
+                type: FIREBASE_HOME_TAGS_SUCCESS,
+                payload: resultTags
+            })
+
+            // GET ALL DEFINITIONS DATA
             const response = await axios.get(`${BACKEND_URL}/definitions`)
 
             const sortedData = response.data.sort(sortByFeatured)

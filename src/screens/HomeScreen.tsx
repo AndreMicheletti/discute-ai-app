@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+import React from "react";
+import { Feather } from '@expo/vector-icons';
 import { 
   View,
   ActivityIndicator,
@@ -31,6 +32,10 @@ type Props = {
   submitSearch: Function,
   resetSearch: Function,
   changeSearchText: Function,
+  homeTags: {
+    title: string,
+    tag: string
+  }[],
   search: {
     searchQuery: string,
     loading: boolean,
@@ -39,30 +44,6 @@ type Props = {
     searchResult: DefinitionResponse[]
   },
   navigation: any,
-}
-
-type HomeSectionProps = {
-  title: string,
-  data: DefinitionResponse[],
-  horizontal: boolean,
-  navigation: any,
-}
-
-
-const HomeSection = (props: HomeSectionProps) => {
-  return (
-    <View style={{ marginTop: 10, marginBottom: 25 }}>
-      <Text style={{ paddingHorizontal: 15, fontSize: 22, fontWeight: "800" }}>
-        {props.title}
-      </Text>
-      {props.horizontal ? (
-        <HorizontalSection data={props.data} navigation={props.navigation} />
-      ) : (
-        <VerticalSection data={props.data} navigation={props.navigation} />
-      )}
-      
-    </View>
-  )
 }
 
 type State = {
@@ -175,16 +156,12 @@ class HomeScreen extends React.Component<Props> {
     )
   }
 
-  homeSections () {
-    return [
-      { id: 'featured', horizontal: true, title: "Em Alta", data: this.featuredData() },
-      { id: 'normal', horizontal: false, title: "Definições", data: this.notFeaturedData() },
-    ]
-  }
-
   renderSections() {
 
-    const { loading, error, definitions, navigation } = this.props;
+    const { loading, error, navigation, homeTags } = this.props;
+
+    console.log('home tagss')
+    console.log(homeTags)
 
     if (loading)
       return this.renderLoading();
@@ -195,24 +172,28 @@ class HomeScreen extends React.Component<Props> {
     return (
       <FlatList
         contentContainerStyle={{ paddingBottom: 8 }}
-        data={this.homeSections()}
+        data={homeTags}
         renderItem={({ item }) => {
-          const { data, title, horizontal } = item;
+          const { title, tag } = item;
           return (
-            <HomeSection horizontal={horizontal} title={title} data={data} navigation={navigation}/>
+              <View style={{ marginTop: 10, marginBottom: 25 }}>
+                <TouchableNativeFeedback
+                  onPress={() => { navigation.push('Category', { category: item }) }}
+                >
+                  <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 10, alignItems: 'center' }}>
+                    <Text style={{ paddingBottom: 5, fontSize: 22, fontWeight: "800" }}>
+                      {title}
+                    </Text>
+                    <Feather color="black" name="arrow-right" size={26} />
+                  </View>
+                </TouchableNativeFeedback>
+                <HorizontalSection navigation={navigation} tag={tag} />
+              </View>
           )
         }}
-        keyExtractor={item => item.id}
+        keyExtractor={item => item.tag}
       />
     )
-  }
-
-  featuredData(): DefinitionResponse[] {
-    return _.values(this.props.definitions).filter(def => def._source.featured);
-  }
-
-  notFeaturedData(): DefinitionResponse[] {
-    return _.values(this.props.definitions).filter(def => !def._source.featured);
   }
 
   renderLoading () {
@@ -275,6 +256,7 @@ const mapStateToProps = (state: any) => {
     loading: state.home.loading,
     error: state.home.error,
     definitions: state.definitions,
+    homeTags: state.home.tags,
     search: {
       ...state.search
     }

@@ -5,7 +5,6 @@ import * as colors from '../colors'
 
 const DiscussionScreen = () => {
 
-
     return (
         <View style={styles.container}>
             <Text>DiscussionScreen</Text>

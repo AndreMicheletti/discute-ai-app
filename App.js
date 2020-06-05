@@ -25,7 +25,6 @@ function App() {
         fontDisplay: FontDisplay.FALLBACK
       }
     })
-    console.log(res)
   }, [])
 
   return (

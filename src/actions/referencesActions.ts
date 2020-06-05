@@ -11,11 +11,6 @@ export const parseReferences = (referenceList: string[], definitionsStore: Defin
     return async (dispatch: Function) => {
         dispatch({ type: REFERENCES_INIT });
 
-        console.log(" I GOT ")
-        console.log(referenceList)
-        console.log(" DEFINITION STORE ")
-        console.log(definitionsStore)
-
         try {
 
             const parsed: DefinitionResponse[] = referenceList.map((id: string, index: number, array: string[]) => {

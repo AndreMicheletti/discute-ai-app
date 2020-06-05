@@ -40,14 +40,16 @@ class DefinitionButton extends React.PureComponent<Props> {
 
     renderText () {
         const { definition } = this.props;
-        const { title, featured, tags, imageUrl } = definition._source;
+        const { title, tags, imageUrl } = definition._source;
 
-        if (featured || imageUrl !== "") {
+        const bigText = title.length > 24
+
+        if (imageUrl !== "") {
             return (
                 <View style={styles.textShadowContainer}>
                     <Text
-                        numberOfLines={1}
-                        style={[styles.featuredTextStyle, { fontSize: featured ? 24 : 18 }]}
+                        numberOfLines={bigText ? 4 : 3}
+                        style={[styles.featuredTextStyle, { fontSize: bigText ? 12 : 18 }]}
                         adjustsFontSizeToFit
                     >
                         {title}
@@ -70,7 +72,7 @@ class DefinitionButton extends React.PureComponent<Props> {
         return (
             <React.Fragment>
                 <Text numberOfLines={2} adjustsFontSizeToFit
-                    style={[styles.textStyle, { fontSize: featured ? 24 : 18 }]}
+                    style={[styles.textStyle, { fontSize: 18 }]}
                 >
                     {title}
                 </Text>
@@ -84,14 +86,14 @@ class DefinitionButton extends React.PureComponent<Props> {
     render () {
 
         const { line, definition, onPress, style } = this.props;
-        const { imageUrl, featured } = definition._source;
+        const { imageUrl } = definition._source;
 
         const extraStyle = {
             ...style,
             backgroundColor: "#2765cf",
             flex: line ? 1 : undefined,
-            width: line ? undefined : (featured ? 310 : 145),
-            height: line ? 100 : (featured ? 165 : 145),
+            width: line ? undefined : 145,
+            height: line ? 100 : 145,
             borderRadius: line ? 3 : 10
         };
 
@@ -128,7 +130,7 @@ const styles = StyleSheet.create({
         height: 145,
         borderRadius: 10,
         marginTop: 5,
-        marginRight: 10,
+        marginHorizontal: 5,
         paddingHorizontal: 5,
         textAlign: 'center',
         justifyContent: 'center',

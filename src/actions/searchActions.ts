@@ -16,7 +16,7 @@ export const submitSearch = (searchQuery: string) => {
 
         try {
             
-            const response = await axios.get(`${BACKEND_URL}/definitions/${encodeURI(searchQuery)}`)
+            const response = await axios.get(`${BACKEND_URL}/definitions/search/${encodeURI(searchQuery)}`)
 
             dispatch({
               type: SEARCH_SUCCESS,
