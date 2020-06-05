@@ -3,6 +3,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons'
 import * as colors from '../colors'
 
 import DefinitionTab from './DefinitionTab'
+import DiscussionTab from './DiscussionTab'
 import SettingsTab from './SettingsTab'
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
@@ -52,8 +53,7 @@ const TabStack = () => {
         }}
     >
       <Tab.Screen name="Definition" options={{ title: 'Definições' }} component={DefinitionTab} />
-      <Tab.Screen name="Discussion" options={{ title: 'Discussão' }} component={SettingsTab} />
-      {/* <Tab.Screen name="Profile" options={{ title: 'Conta' }} component={SettingsTab} /> */}
+      <Tab.Screen name="Discussion" options={{ title: 'Discussão' }} component={DiscussionTab} />
       <Tab.Screen name="About" options={{ title: 'Sobre' }} component={SettingsTab} />
     </Tab.Navigator>
   )

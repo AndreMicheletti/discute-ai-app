@@ -1,11 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { 
   View,
   ActivityIndicator,
   Text,
   StyleSheet,
   StatusBar,
-  ScrollView,
   TextInput,
   Keyboard,
   FlatList,
