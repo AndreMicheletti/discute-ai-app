@@ -4,7 +4,8 @@ import * as colors from '../colors'
 
 import DefinitionTab from './DefinitionTab'
 import DiscussionTab from './DiscussionTab'
-import SettingsTab from './SettingsTab'
+import FakeNewsTab from './FakeNewsTab'
+import PodcastTab from './PodcastTab'
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 
@@ -23,14 +24,18 @@ const TabStack = () => {
                     iconName = 'book'
                     break
                 case 'Discussion':
-                    iconName = 'thought-bubble'
+                    size = 26
+                    iconName = 'chat-processing' // 'thought-bubble'
                     break
                 // case 'Profile':
                 //     iconName = 'account'
                 //     size = 29
                 //     break
-                case 'About':
-                    iconName = 'information'
+                case 'Fakenews':
+                    iconName = 'shield-alert'
+                    break
+                case 'Podcast':
+                    iconName = 'headphones'
                     break
                 default:
                     iconName = ''
@@ -53,8 +58,9 @@ const TabStack = () => {
         }}
     >
       <Tab.Screen name="Definition" options={{ title: 'Definições' }} component={DefinitionTab} />
-      <Tab.Screen name="Discussion" options={{ title: 'Discussão' }} component={DiscussionTab} />
-      <Tab.Screen name="About" options={{ title: 'Sobre' }} component={SettingsTab} />
+      <Tab.Screen name="Discussion" options={{ title: 'Debate' }} component={DiscussionTab} />
+      <Tab.Screen name="Fakenews" options={{ title: 'Fake News' }} component={FakeNewsTab} />
+      <Tab.Screen name="Podcast" options={{ title: 'Podcast' }} component={PodcastTab} />
     </Tab.Navigator>
   )
 }

@@ -3,9 +3,9 @@ import { View, Text } from 'react-native'
 
 import { createStackNavigator } from '@react-navigation/stack'
 
-const Settings = createStackNavigator()
+const FakeNews = createStackNavigator()
 
-const SettingsScreen = () => {
+const FakeNewsScreen = () => {
   return (
     <View>
       <Text>Olá</Text>
@@ -13,15 +13,15 @@ const SettingsScreen = () => {
   )
 }
 
-const SettingsStack = () => {
+const FakeNewsStack = () => {
     return (
-        <Settings.Navigator>
-            <Settings.Screen
+        <FakeNews.Navigator>
+            <FakeNews.Screen
                 name="Home"
-                component={SettingsScreen}
+                component={FakeNewsScreen}
             />
-        </Settings.Navigator>
+        </FakeNews.Navigator>
     )
 }
 
-export default SettingsStack
+export default FakeNewsStack
